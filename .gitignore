@@ -1,0 +1,23 @@
+# Arquivos de compilação (Executáveis e Objetos)
+*.o
+*.obj
+*.exe
+*.out
+*.dll
+*.so
+*.a
+*.lib
+
+# Pastas geradas automaticamente pelo Code::Blocks
+bin/
+obj/
+
+# Arquivos de configurações locais do Code::Blocks
+*.layout
+*.depend
+
+# Arquivos de sistema operacional (Windows/Mac)
+Thumbs.db
+.DS_Store
+
+*.txt
