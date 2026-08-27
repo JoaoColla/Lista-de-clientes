@@ -1,6 +1,6 @@
 #include <stdio.h>
 #define MAX_LIN 150
-#define MAX_NOME 130
+#define MAX_NOME 100
 #define MAX_PESSOAS 150
 
 
@@ -33,9 +33,8 @@ int main(){
     fclose(arq);
 
     printf("\nTotal de pessoas carregadas: %d\n", i);
-    if (i > 0) {
-        printf("Pessoa 1: %s | RG: %ld\n", listaPessoas[0].nome, listaPessoas[0].rg);
-        printf("Pessoa 2: %s | RG: %ld\n", listaPessoas[1].nome, listaPessoas[1].rg);
+    for (int k=0; k<=i; k++) {
+        printf("Pessoa %3d: %10s | RG: %ld\n", k, listaPessoas[k].nome, listaPessoas[k].rg);
     }
 
     return 0;
