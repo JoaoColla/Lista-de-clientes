@@ -33,11 +33,11 @@
 		</Compiler>
 		<Unit filename="mainEnc.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 		</Unit>
 		<Unit filename="mainSeg.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Extensions />
 	</Project>
