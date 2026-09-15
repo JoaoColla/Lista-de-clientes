@@ -26,7 +26,8 @@ int main(){
     Pessoa *anterior=NULL;
     Pessoa *ultimo=NULL;
 
-    FILE *arq = fopen("C:\\Users\\joaod\\MINHAS PASTAS\\UTFPR\\2 Periodo\\Estrutura de Dados-01\\Lista de Clientes\\NomeRG100.txt", "r");
+    FILE *arq = fopen("/home/aluno/Downloads/joao/Lista-de-clientes/NomeRG1k.txt", "r");
+
 
     if (arq == NULL){
         printf("Falha ao abrir o arquivo.");
@@ -41,13 +42,13 @@ int main(){
         strcpy(atual->nome, nome);
         atual->rg = rg;
         atual->proximo = NULL;
-        
+
         if (qnt_pessoas==0){
             inicio = atual;
         }else{
             anterior->proximo = atual;
         }
-        
+
         anterior = atual;
         ultimo = atual;
         qnt_pessoas ++;
