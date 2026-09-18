@@ -166,6 +166,7 @@ int main(){
                 printf("Rg: ");
                 scanf("%ld", &rg);
 
+                comparacao++;
                 if(posicao < 0 || posicao > num_pessoas){
                     printf("posicao invalida.");
                     continue;
@@ -250,6 +251,7 @@ int main(){
                 printf("posicao: ");
                 scanf("%d", &posicao);
 
+                comparacao++;
                 if (posicao < 0 || posicao >= num_pessoas){
                     printf("posicao invalida.");
                     continue;
