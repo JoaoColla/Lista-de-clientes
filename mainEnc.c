@@ -29,7 +29,7 @@ int main(){
     Pessoa *atual= NULL;
     Pessoa *anterior=NULL;
 
-    FILE *arq = fopen("/home/aluno/Downloads/joao/Lista-de-clientes/NomeRG1k.txt", "r");
+    FILE *arq = fopen("C:\\Users\\joaod\\MINHAS PASTAS\\UTFPR\\2 Periodo\\Estrutura de Dados-01\\Lista de Clientes\\NomeRG10.txt", "r");
 
 
     if (arq == NULL){
@@ -55,14 +55,6 @@ int main(){
         anterior = atual;
         ultimo = atual;
         qnt_pessoas ++;
-    }
-
-    i = 1;
-    Pessoa *p = inicio;
-    while(p != NULL){
-        printf("%d - Nome: %15s|RG: %15ld\n", i, p->nome, p->rg);
-        p = p->proximo;
-        i++;
     }
 
     int comparacao = 0, movimentacao = 0, opcao, posicao;
@@ -130,9 +122,15 @@ int main(){
             aux->rg = rg;
             aux->proximo = NULL;
 
-            movimentacao++;
-            ultimo->proximo = aux;
-            ultimo = aux;
+            comparacao++;
+            if (inicio == NULL) {
+                inicio = aux;
+                ultimo = aux;
+            } else {
+                movimentacao++;
+                ultimo->proximo = aux;
+                ultimo = aux;
+            }
 
             clock_t fimTempo = clock();
             tempo = (double)(fimTempo-inicioTempo) / CLOCKS_PER_SEC;
@@ -144,6 +142,7 @@ int main(){
         }else if (opcao == 3){
             comparacao = 0;
             movimentacao =0;
+            i=0;
 
             printf("Posicao: ");
             scanf("%d", &posicao);
@@ -169,18 +168,29 @@ int main(){
             aux->rg = rg;
 
             anterior = inicio;
-            for(i=0; i<posicao; i++, comparacao++){
+            comparacao++;
+            if (posicao == 0){
+                strcpy(aux->nome, nome);
+                aux->rg = rg;
+
                 movimentacao++;
-                anterior = anterior->proximo;
+                aux->proximo = inicio;
+                inicio = aux;
+            }else{
+
+                for(i=0; i<posicao-1; i++, comparacao++){
+                    movimentacao++;
+                    anterior = anterior->proximo;
+                }
+                movimentacao+=2;
+                aux->proximo = anterior->proximo;
+                anterior->proximo = aux;
             }
-            movimentacao+=2;
-            aux->proximo = anterior->proximo;
-            anterior->proximo = aux;
 
             clock_t fimTempo = clock();
             tempo = (double)(fimTempo-inicioTempo) / CLOCKS_PER_SEC;
 
-            printf("Nome: %s  |Rg: %ld  |C: %d  |M  %d  |Tempo: %.12f |Posicao: %d\n", nome, rg, comparacao, movimentacao, tempo, i);
+            printf("Nome: %s  |Rg: %ld  |C: %d  |M  %d  |Tempo: %.12f |Posicao: %d\n", nome, rg, comparacao, movimentacao, tempo, i+1);
 
             qnt_pessoas++;
         }else if (opcao == 4){
@@ -191,11 +201,10 @@ int main(){
             strcpy(nome, inicio->nome);
             rg = inicio->rg;
 
-            movimentacao++;
-            inicio=inicio->proximo;
-
-            movimentacao++;
+            movimentacao+=2;
+            aux=inicio->proximo;
             free(inicio);
+            inicio = aux;
 
             qnt_pessoas--;
 
@@ -208,22 +217,28 @@ int main(){
             movimentacao =0;
             clock_t inicioTempo = clock();
 
-            aux = inicio;
-            while(aux->proximo != ultimo){
-                comparacao++;
-
+            comparacao++;
+            if (inicio == ultimo) {
                 movimentacao++;
-                aux = aux->proximo;
+                strcpy(nome, inicio->nome);
+                rg = inicio->rg;
+                free(inicio);
+                inicio = ultimo = NULL;
+
+            } else {
+                aux = inicio;
+                while(aux->proximo != ultimo){
+                    comparacao++;
+                    movimentacao++;
+                    aux = aux->proximo;
+                }
+                strcpy(nome, ultimo->nome);
+                rg = ultimo->rg;
+                movimentacao += 2;
+                aux->proximo = NULL;
+                free(ultimo);
+                ultimo = aux;
             }
-
-            strcpy(nome, ultimo->nome);
-            rg->ultimo->rg;
-
-            movimentacao+=2;
-            aux->proximo = NULL;
-            free(ultimo);
-            ultimo = aux;
-
             qnt_pessoas--;
 
             clock_t fimTempo = clock();
@@ -234,7 +249,7 @@ int main(){
             comparacao = 0;
             movimentacao =0;
 
-        
+
             printf("Posicao: ");
             scanf("%d", &posicao);
 
@@ -247,22 +262,33 @@ int main(){
                 continue;
             }
 
-            anterior = inicio;
-            for (i=0; i<posicao-1; i++, comparacao++){
-                movimentacao++;
-                anterior = anterior->proximo;
+            comparacao++;
+            if(posicao == 0){
+
+                strcpy(nome, inicio->nome);
+                rg = inicio->rg;
+                movimentacao += 2;
+                aux = inicio->proximo;
+                free(inicio);
+                inicio = aux;
+
+            } else {
+
+                anterior = inicio;
+                for (i=0; i<posicao-1; i++, comparacao++){
+                    movimentacao++;
+                    anterior = anterior->proximo;
+                }
+
+                movimentacao += 3;
+                aux = anterior->proximo;
+                anterior->proximo = aux->proximo;
+                strcpy(nome, aux->nome);
+                rg = aux->rg;
+                free(aux);
             }
 
-            movimentacao+=3;
-            aux = anterior->proximo;
-            anterior->proximo = aux->proximo;
-
-            strcpy(nome, aux->nome);
-            rg = aux->rg;
-
-            free(aux);
             qnt_pessoas--;
-
             clock_t fimTempo = clock();
             tempo = (double)(fimTempo-inicioTempo) / CLOCKS_PER_SEC;
             printf("Nome: %s  |Rg: %ld  |C: %d  |M  %d  |Tempo: %.12f |Posicao: %d\n", nome, rg, comparacao, movimentacao, tempo, posicao);
@@ -271,27 +297,35 @@ int main(){
             movimentacao =0;
 
             printf("Digite o rg para a busca: ");
-            scanf("%ld", rg);
+            scanf("%ld", &rg);
 
             clock_t inicioTempo = clock();
 
             aux = inicio;
             posicao=0;
-            while(anterior->rg != rg){
-                aux++;
+            while(aux != NULL && aux->rg != rg){
+                comparacao++;
 
                 movimentacao++;
                 aux = aux->proximo;
-
                 posicao++;
             }
 
-            strcpy(nome, aux->nome);
-            rg = aux->rg;
+            if (aux == NULL) {
+                printf("Pessoa nao encontrada.\n");
+                opcao = 0;
+                continue;
 
-            clock_t fimTempo = clock();
-            tempo = (double)(fimTempo-inicioTempo) / CLOCKS_PER_SEC;
-            printf("Nome: %s  |Rg: %ld  |C: %d  |M  %d  |Tempo: %.12f |Posicao: %d\n", nome, rg, comparacao, movimentacao, tempo, posicao);
+            } else {
+                strcpy(nome, aux->nome);
+                rg = aux->rg;
+
+                clock_t fimTempo = clock();
+                tempo = (double)(fimTempo-inicioTempo) / CLOCKS_PER_SEC;
+
+                printf("Nome: %s  |Rg: %ld  |C: %d  |M  %d  |Tempo: %.12f |Posicao: %d\n", nome, rg, comparacao, movimentacao, tempo, posicao);
+            }
+
         }else if(opcao == 8){
             i =0;
             aux = inicio;
@@ -303,7 +337,7 @@ int main(){
         }else if(opcao == 9){
 
             FILE *arq_saida = fopen("lista_saida.txt", "w");
-    
+
             comparacao++;
             if (arq_saida == NULL){
                 printf("Erro abindo o arquivo.");
@@ -311,12 +345,72 @@ int main(){
             }
 
             aux = inicio;
-            while(aux->proximo != NULL){
-                fprintf()
+            while(aux != NULL){
+                fprintf(arq_saida, "%s, %ld\n", aux->nome, aux->rg);
+                aux = aux->proximo;
             }
 
+            fclose(arq_saida);
+
+        }else if (opcao == 10){
+            char caminho[200];
+
+            printf("Qual e o caminho do arquivo? ");
+            scanf("%s", caminho);
+
+            FILE *arq = fopen(caminho, "r");
+
+            if (arq == NULL){
+                printf("Erro abrindo o arquivo");
+                return 1;
+            }
+
+            anterior = ultimo;
+            while(fgets(linha, MAX_LIN, arq) != NULL){
+
+                sscanf (linha, "%[^,], %ld", nome, &rg);
+
+                atual = (Pessoa *) malloc(sizeof(Pessoa));
+                strcpy(atual->nome, nome);
+                atual->rg = rg;
+                atual->proximo = NULL;
+
+                if (inicio == NULL) {
+                    inicio = atual;
+
+                } else {
+                    anterior->proximo = atual;
+
+                }
+
+                anterior = atual;
+                ultimo = atual;
+                qnt_pessoas++;
+            }
+            fclose(arq);
         }
-        
+
+        printf("Escolha uma opcao pelo numero:\n"
+            "1 - Inserir no inicio da lista\n"
+            "2 - Inserir no fim da lista\n"
+            "3 - Inserir na posicao N da lista\n"
+            "4 - Retirar um no do inicio da lista\n"
+            "5 - Retirar um no no fim da lista\n"
+            "6 - Retirar um no na posição N\n"
+            "7 - Procurar um no com o campo RG\n"
+            "8 - Mostrar a lista na tela\n"
+            "9 - Salvar a lista em um arquivo\n"
+            "10 - Ler a lista de um arquivo\n"
+            "11 - Sair do sistema\n");
+        scanf("%d", &opcao);
+
+    }
+
+    atual = inicio;
+    while(atual !=NULL){
+        aux = atual->proximo;
+        free(atual);
+        atual = aux;
     }
 
     return 0;
